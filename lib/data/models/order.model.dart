@@ -1,4 +1,5 @@
 import 'package:ecommerce_int2/data/models/cart.model.dart';
+import 'package:intl/intl.dart';
 
 class OrderResponse {
   bool? success;
@@ -10,7 +11,7 @@ class OrderResponse {
   OrderResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     message = json['message'];
-    order = json['order'] != null ? new Order.fromJson(json['order']) : null;
+    order = json['data'] != null ? new Order.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -18,7 +19,7 @@ class OrderResponse {
     data['success'] = this.success;
     data['message'] = this.message;
     if (this.order != null) {
-      data['order'] = this.order!.toJson();
+      data['data'] = this.order!.toJson();
     }
     return data;
   }
@@ -37,6 +38,14 @@ class Order {
   String? created;
   int? iV;
 
+  String get createdDate {
+    if (created == null) return '';
+    final date = DateTime.tryParse(created!);
+    if (date == null) return '';
+    final res = DateFormat("yyyy-MM-dd HH:mm:ss aa").format(date);
+    return res;
+  }
+
   Order(
       {this.cart,
       this.user,
@@ -51,7 +60,7 @@ class Order {
       this.iV});
 
   Order.fromJson(Map<String, dynamic> json) {
-    cart = json['cart'];
+    cart = json['cart'] is String ? json['cart']: json['cart']['_id'];
     user = json['user'];
     merchant = json['merchant'];
     payment = json['payment'];
@@ -117,9 +126,8 @@ class CompleteOrderResponse {
   CompleteOrderResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     message = json['message'];
-    orderDoc = json['data'] != null
-        ? new OrderDoc.fromJson(json['data'])
-        : null;
+    orderDoc =
+        json['data'] != null ? new OrderDoc.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -224,9 +232,8 @@ class DetailOrderResponse {
 
   DetailOrderResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    orderDoc = json['data'] != null
-        ? new OrderDocDetail.fromJson(json['data'])
-        : null;
+    orderDoc =
+        json['data'] != null ? new OrderDocDetail.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -252,9 +259,17 @@ class OrderDocDetail {
   int? iV;
   String? address;
 
-  bool get isPayWithCash => payment == 'CASH';
+  String get createdDate {
+    if (created == null) return '';
+    final date = DateTime.tryParse(created!);
+    if (date == null) return '';
+    final res = DateFormat("yyyy-MM-dd HH:mm:ss aa").format(date);
+    return res;
+  }
 
-  bool get canCancel => status == 'NOT_PROCESS';
+  bool get isPayWithCash => payment == 'CASH' && canCancel;
+
+  bool get canCancel => !(status == 'CANCLED' || status == 'RECEIVED') ;
 
   OrderDocDetail(
       {this.sId,

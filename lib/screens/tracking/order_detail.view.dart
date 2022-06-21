@@ -2,6 +2,7 @@ import 'package:ecommerce_int2/data/repository/order.repository.dart';
 import 'package:ecommerce_int2/screens/main/components/product_list.dart';
 import 'package:ecommerce_int2/screens/tracking/order.controller.dart';
 import 'package:ecommerce_int2/screens/tracking/order_detail.controller.dart';
+import 'package:ecommerce_int2/screens/tracking/row_text.widget.dart';
 import 'package:ecommerce_int2/utils/app_properties.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,7 +30,6 @@ class OrderDetail extends StatelessWidget {
               appBar: AppBar(
                 backgroundColor: Colors.transparent,
                 elevation: 0.0,
-                brightness: Brightness.light,
                 iconTheme: IconThemeData(color: Colors.grey),
                 title: Text(
                   orderId,
@@ -39,8 +39,7 @@ class OrderDetail extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                leading: SizedBox(),
-                actions: <Widget>[CloseButton()],
+                leading: BackButton(),
               ),
               body: SafeArea(
                 child: LayoutBuilder(
@@ -57,15 +56,22 @@ class OrderDetail extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const SizedBox(height: 24),
-                                    Text(
-                                        'Deliver status: ${controller.detail?.status ?? ''}'),
-                                    Text(
-                                        'Payment status: ${controller.detail?.paymentStatus ?? ''}'),
-                                    Text(
-                                        'Merchant: ${controller.detail?.merchant ?? ''}'),
-                                    Text(
-                                        'Date: ${controller.detail?.created ?? ''}'),
-                                    Text('Products'),
+                                    RowTextWidget(
+                                        text1: 'Deliver status',
+                                        text2:
+                                            ' ${controller.detail?.status ?? ''}'),
+                                    RowTextWidget(
+                                        text1: 'Payment status',
+                                        text2:
+                                            '${controller.detail?.paymentStatus ?? ''}'),
+                                    RowTextWidget(
+                                        text1: 'Merchant',
+                                        text2:
+                                            '${controller.detail?.merchant ?? ''}'),
+                                    RowTextWidget(
+                                        text1: 'Date',
+                                        text2:
+                                            '${controller.detail?.createdDate ?? ''}'),
                                     const SizedBox(height: 16),
                                     ...controller.detail!.cart!.products!
                                         .map((product) => ProductCard(
@@ -73,84 +79,78 @@ class OrderDetail extends StatelessWidget {
                                             height: 130,
                                             width: Get.width))
                                         .toList(),
-                                      const SizedBox(height: 16),
-                                    if (controller.detail!.isPayWithCash)
-                                      GestureDetector(
-                                        onTap: (() => controller.makePayment(orderId)),
-                                        child: Center(
-                                          child: Container(
-                                            height: 40,
-                                            width:
-                                                MediaQuery.of(context).size.width /
-                                                    1.5,
-                                            decoration: BoxDecoration(
-                                                gradient: mainButton,
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Color.fromRGBO(
-                                                        0, 0, 0, 0.16),
-                                                    offset: Offset(0, 5),
-                                                    blurRadius: 10.0,
-                                                  )
-                                                ],
-                                                borderRadius:
-                                                    BorderRadius.circular(9.0)),
-                                            child: Center(
-                                              child: Text("Pay with PayPal",
-                                                  style: const TextStyle(
-                                                      color:
-                                                          const Color(0xfffefefe),
-                                                      fontWeight: FontWeight.w600,
-                                                      fontStyle: FontStyle.normal,
-                                                      fontSize: 20.0)),
-                                            ),
-                                          ),
-                                        ),
+                                    const SizedBox(height: 16),
+                                    if (!controller.detail!.isPayWithCash)
+                                      Button(
+                                          title: 'Pay with Paypal',
+                                          onTap: () =>
+                                              controller.makePayment(orderId)),
+                                    if (controller.detail!.canCancel)
+                                      Button(
+                                        title: 'Cancle Order',
+                                        onTap: () => controller.remove(orderId),
                                       ),
-                                      const SizedBox(height: 16),
-                                      if (controller.detail!.canCancel)
-                                      GestureDetector(
-                                        onTap: (() => controller.remove(orderId)),
-                                        child: Center(
-                                          child: Container(
-                                            height: 40,
-                                            width:
-                                                MediaQuery.of(context).size.width /
-                                                    1.5,
-                                            decoration: BoxDecoration(
-                                                gradient: mainButton,
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Color.fromRGBO(
-                                                        0, 0, 0, 0.16),
-                                                    offset: Offset(0, 5),
-                                                    blurRadius: 10.0,
-                                                  )
-                                                ],
-                                                borderRadius:
-                                                    BorderRadius.circular(9.0)),
-                                            child: Center(
-                                              child: Text("Cancle Order",
-                                                  style: const TextStyle(
-                                                      color:
-                                                          const Color(0xfffefefe),
-                                                      fontWeight: FontWeight.w600,
-                                                      fontStyle: FontStyle.normal,
-                                                      fontSize: 20.0)),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                    if (!controller.detail!.canCancel)
+                                    Button(
+                                      title: 'Confirm Received',
+                                      onTap: () =>
+                                          controller.confirmOrder(orderId),
+                                    ),
+                                    if (controller.detail?.status == 'RECEIVED')
+                                      Button(
+                                          title: 'Add review',
+                                          onTap: () => print('add review'))
                                   ],
                                 )
                               : SizedBox.shrink(),
-                              
                         ),
                       ),
                     ),
                   ),
                 ),
               )),
+        ),
+      ),
+    );
+  }
+}
+
+class Button extends StatelessWidget {
+  const Button({Key? key, required this.onTap, required this.title})
+      : super(key: key);
+
+  final String title;
+  final Function onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GestureDetector(
+        onTap: (() => onTap()),
+        child: Center(
+          child: Container(
+            height: 40,
+            width: MediaQuery.of(context).size.width / 1.5,
+            decoration: BoxDecoration(
+                gradient: mainButton,
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.16),
+                    offset: Offset(0, 5),
+                    blurRadius: 10.0,
+                  )
+                ],
+                borderRadius: BorderRadius.circular(9.0)),
+            child: Center(
+              child: Text(title,
+                  style: const TextStyle(
+                      color: const Color(0xfffefefe),
+                      fontWeight: FontWeight.w600,
+                      fontStyle: FontStyle.normal,
+                      fontSize: 20.0)),
+            ),
+          ),
         ),
       ),
     );

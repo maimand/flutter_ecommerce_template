@@ -1,9 +1,7 @@
 import 'package:ecommerce_int2/utils/app_properties.dart';
 import 'package:ecommerce_int2/screens/faq_page.dart';
-import 'package:ecommerce_int2/screens/payment/payment_page.dart';
 import 'package:ecommerce_int2/screens/settings/settings_page.dart';
 import 'package:ecommerce_int2/screens/tracking/tracking_page.dart';
-import 'package:ecommerce_int2/screens/wallet/wallet_page.dart';
 import 'package:ecommerce_int2/services/auth.service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -74,8 +72,7 @@ class ProfilePage extends StatelessWidget {
                           children: <Widget>[
                             IconButton(
                               icon: Image.asset('assets/icons/truck.png'),
-                              onPressed: () => Navigator.of(context).push(
-                                MaterialPageRoute(builder: (_) => TrackingPage())),
+                              onPressed: () => Get.to(() => TrackingPage()),
                             ),
                             Text(
                               'Orders',
