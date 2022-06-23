@@ -94,6 +94,7 @@ class CheckOutPage extends StatelessWidget {
                     ...controller.products.map(
                       (product) => ShopItemList(
                         product,
+                        onChange: (a, b) => controller.onChangeQuantity(a, b),
                         onRemove: () => controller.remove(product),
                       ),
                     ),
@@ -119,16 +120,6 @@ class CheckOutPage extends StatelessWidget {
                               fontSize: 16),
                         )
                       ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      'Payment',
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: darkGrey,
-                          fontWeight: FontWeight.bold),
                     ),
                   ),
                   SizedBox(height: 24),

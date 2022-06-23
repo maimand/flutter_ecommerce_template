@@ -23,11 +23,13 @@ class AddressController extends GetxController {
 
   AddressController(this.repository, this.orderRepository, this.authService);
 
-  List<String>? orderIds;
+  List<OrderProceed>? orderIds;
 
   List<Address> addresses = <Address>[Address()];
 
   int selectIndex = 0;
+
+  int swiperIndex = 0;
 
   Address get selectedAddress => addresses[selectIndex];
 
@@ -40,15 +42,13 @@ class AddressController extends GetxController {
   @override
   void onReady() {
     getAllAddress();
-    address.text = selectedAddress.address ?? "";
-    city.text = selectedAddress.city ?? "";
-    phone.text = authService.userModel!.email ?? "";
+
     super.onReady();
   }
 
   void getArgument() {
     final arg = Get.arguments;
-    if (arg != null && arg is List<String>) {
+    if (arg != null && arg is List<OrderProceed>) {
       orderIds = arg;
     }
   }
@@ -60,13 +60,17 @@ class AddressController extends GetxController {
     addresses.insert(0, Address());
     int index = addresses.indexWhere((element) => element.isDefault!);
     if (index != -1) selectIndex = index;
+    address.text = selectedAddress.address ?? "";
+    city.text = selectedAddress.city ?? "";
+    phone.text = authService.userModel!.email ?? "";
     MessageDialog.hideLoading();
-
     update();
   }
 
   void updateIndex(int index) {
     selectIndex = index;
+    address.text = selectedAddress.address ?? "";
+    city.text = selectedAddress.city ?? "";
     update();
   }
 
@@ -93,21 +97,22 @@ class AddressController extends GetxController {
       Get.back();
       return;
     }
+    if (swiperIndex == 1) {
+      final done = await Get.to(() => PaymentPage(), arguments: orderIds);
+      if (!done) return;
+    }
     try {
       MessageDialog.showLoading();
-      for (String order in orderIds!) {
+      for (OrderProceed order in orderIds!) {
         await orderRepository.completeOrder(
-            order,
+            order.data!.order!.sId!,
             CompleteOrderParam(
                 address: '${selectedAddress.address}, ${selectedAddress.city}',
                 phoneNumber: authService.userModel!.email,
-                payment: swiperController.index == 0 ? 'CASH' : 'PAYPAL'));
+                payment: swiperIndex == 0 ? 'CASH' : 'PAYPAL'));
       }
       MessageDialog.hideLoading();
-      if (swiperController.index == 0)
-        Get.offAll(() => TrackingPage(), arguments: true);
-      else
-        Get.to(() => PaymentPage());
+      Get.offAll(() => TrackingPage(), arguments: true);
     } on Exception catch (e) {
       MessageDialog.hideLoading();
       print(e);

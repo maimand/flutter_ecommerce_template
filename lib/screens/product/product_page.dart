@@ -1,6 +1,7 @@
 import 'package:ecommerce_int2/data/models/product.model.dart';
 import 'package:ecommerce_int2/screens/main/components/product_list.dart';
 import 'package:ecommerce_int2/screens/merchant/merchant.view.dart';
+import 'package:ecommerce_int2/screens/rating/rating_page.dart';
 import 'package:ecommerce_int2/screens/search_products/search_controller.dart';
 import 'package:ecommerce_int2/screens/shop/cart.controller.dart';
 import 'package:ecommerce_int2/utils/app_properties.dart';
@@ -22,9 +23,9 @@ class ProductPage extends StatelessWidget {
     double bottomPadding = MediaQuery.of(context).padding.bottom;
 
     Widget viewProductButton = InkWell(
-      onTap: () => controller.addProduct(product),
+      onTap: () => controller.addProduct(product, quantity: 1),
       child: Container(
-        height: 80,
+        height: 60,
         width: width / 1.5,
         decoration: BoxDecoration(
             gradient: mainButton,
@@ -80,8 +81,8 @@ class ProductPage extends StatelessWidget {
                     fontSize: 20.0),
               ),
             ),
-            SizedBox(
-              height: 24.0,
+            const SizedBox(
+              height: 24.0
             ),
             Padding(
                 padding: EdgeInsets.only(left: 20.0, right: 40.0, bottom: 20),
@@ -111,6 +112,7 @@ class ProductPage extends StatelessWidget {
                 child: Center(child: viewProductButton),
               ),
             ),
+            Ratings(product: product),
             GestureDetector(
               onTap: () => Get.to(() => MerchantPage(), arguments: product.merchant),
               child: Padding(
@@ -121,10 +123,11 @@ class ProductPage extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 8),
             ProductListView(
                 products: Get.find<SearchProductController>()
                     .list
-                    .where((element) => element.merchant == product.merchant)
+                    .where((element) => element.subcategory == product.subcategory)
                     .toList())
           ],
         ),

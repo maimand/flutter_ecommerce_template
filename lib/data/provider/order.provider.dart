@@ -15,7 +15,8 @@ class OrderProvider {
       'https://ecommerce-api-dut.herokuapp.com/api/order/';
 
   final String checkOutCartUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/order/add';
+      'https://ecommerce-api-dut.herokuapp.com/api/order/proceed';
+
   final String cancleOrderUrl =
       'https://ecommerce-api-dut.herokuapp.com/api/order';
 
@@ -24,11 +25,6 @@ class OrderProvider {
 
   Future<HttpResponse> getAllOrders() {
     return networkService.get(orderUrl);
-  }
-
-  Future<HttpResponse> checkOut(String cartId) {
-    return networkService.post(checkOutCartUrl,
-        data: {"cart": cartId, "merchant": "626e237ef4224ee4107039b9"});
   }
 
   Future<HttpResponse> completeOrder(String orderId, CompleteOrderParam param) {
@@ -41,7 +37,7 @@ class OrderProvider {
   }
 
   Future<HttpResponse> cancleOrder(String orderId) {
-    return networkService.delete('$cancleOrder/$orderId/cancel');
+    return networkService.delete('$cancleOrderUrl/$orderId/cancel');
   }
 
   Future<HttpResponse> getOrderDetail(String orderId) {
@@ -51,5 +47,10 @@ class OrderProvider {
   Future<HttpResponse> confirmReceived(String orderId) {
     return networkService.put('$confirmReceivedUrl/$orderId/status',
         data: {"status": "RECEIVED"});
+  }
+
+  Future<HttpResponse> payOrder(String orderId) {
+    return networkService.put('$confirmReceivedUrl/$orderId/status',
+        data: {"paymentStatus": "PAID"});
   }
 }

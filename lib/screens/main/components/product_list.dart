@@ -1,5 +1,6 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:ecommerce_int2/data/models/product.model.dart';
+import 'package:ecommerce_int2/screens/rating/rating_dialog.dart';
 import 'package:ecommerce_int2/utils/app_properties.dart';
 import 'package:ecommerce_int2/screens/product/product_page.dart';
 import 'package:flutter/material.dart';
@@ -99,11 +100,13 @@ class ProductCard extends StatelessWidget {
   final Product product;
   final double height;
   final double width;
+  final bool hasReceived;
 
   const ProductCard({
     required this.product,
     required this.height,
     required this.width,
+    this.hasReceived = false,
   });
 
   @override
@@ -112,7 +115,7 @@ class ProductCard extends StatelessWidget {
       onTap: () => Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => ProductPage(product: product))),
       child: Container(
-        margin: const EdgeInsets.symmetric( vertical: 8),
+        margin: const EdgeInsets.symmetric(vertical: 8),
         height: height,
         width: Get.width,
         decoration: BoxDecoration(
@@ -127,46 +130,60 @@ class ProductCard extends StatelessWidget {
               height: 130,
               width: 130,
               fit: BoxFit.contain,
-              
             ),
           ),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        product.name ?? "",
-                        style: TextStyle(
-                            color: Colors.white, fontSize: 16.0),
-                      ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    product.name ?? "",
+                    style: TextStyle(color: Colors.white, fontSize: 16.0),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(8.0, 4.0, 12.0, 4.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          bottomLeft: Radius.circular(10)),
+                      color: Color.fromRGBO(224, 69, 10, 1),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 12.0),
-                      padding:
-                          const EdgeInsets.fromLTRB(8.0, 4.0, 12.0, 4.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            bottomLeft: Radius.circular(10)),
-                        color: Color.fromRGBO(224, 69, 10, 1),
-                      ),
-                      child: Text(
-                        '\$${product.price ?? product.purchasePrice ?? 0}',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
+                    child: Text(
+                      '\$${product.price ?? product.purchasePrice ?? 0}',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
                     ),
-                  ],
-                )
-              ],
+                  ),
+                  if (hasReceived)
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                            child: Text('Add review', style: TextStyle(color: Colors.white),),
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Dialog(
+                                    shape: BeveledRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                    child: RatingDialog(product: product),
+                                  );
+                                },
+                              );
+                            }),
+                      ),
+                    )
+                ],
+              ),
             ),
           ),
         ]),

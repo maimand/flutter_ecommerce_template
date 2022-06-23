@@ -1,4 +1,5 @@
 import 'package:ecommerce_int2/data/models/cart.model.dart';
+import 'package:ecommerce_int2/data/models/order.model.dart';
 import 'package:ecommerce_int2/data/models/product.model.dart';
 import 'package:ecommerce_int2/data/repository/cart.repository.dart';
 import 'package:ecommerce_int2/screens/address/add_address_page.dart';
@@ -7,7 +8,6 @@ import 'package:get/get.dart';
 
 class CartController extends GetxController {
   final CartRepository repository;
-
 
   CartController(this.repository);
 
@@ -69,14 +69,8 @@ class CartController extends GetxController {
             merchant: product.merchant,
             quantity: quantity)
       ]);
-      final String cartId = await repository.addProduct(param);
+      await repository.addProduct(param);
       MessageDialog.showToast("Added product to cart");
-      int index = carts!.indexWhere((element) => element.sId == cartId);
-      if (index != -1) {
-        carts![index].products!.add(product);
-      } else {
-        carts!.add(CartModel(sId: cartId, products: [product]));
-      }
       update();
     } on Exception catch (e) {
       print(e);
@@ -85,8 +79,25 @@ class CartController extends GetxController {
 
   void checkOut() async {
     MessageDialog.showLoading();
-    final List<String> orderIds = await repository.checkOutCart(carts!);
+    final List<OrderProceed> orderIds = await repository.checkOutCart(carts!);
     MessageDialog.hideLoading();
     Get.to(() => AddAddressPage(), arguments: orderIds);
+  }
+
+  void onChangeQuantity(String id, int quantity) {
+    try {
+      final product = products.firstWhere((element) => element.sId == id);
+      repository.modifyProduct(
+          carts!
+              .firstWhere((element) => element.products!.contains(product))
+              .sId!,
+          product.sId!,
+          product.quantity!,
+          quantity);
+      product.quantity = quantity;
+      update();
+    } on Exception catch (e) {
+      print(e.toString());
+    }
   }
 }

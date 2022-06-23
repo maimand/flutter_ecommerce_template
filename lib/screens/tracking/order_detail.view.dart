@@ -77,29 +77,21 @@ class OrderDetail extends StatelessWidget {
                                         .map((product) => ProductCard(
                                             product: product,
                                             height: 130,
+                                            hasReceived: controller.detail?.status == 'RECEIVED',
                                             width: Get.width))
                                         .toList(),
                                     const SizedBox(height: 16),
-                                    if (!controller.detail!.isPayWithCash)
-                                      Button(
-                                          title: 'Pay with Paypal',
-                                          onTap: () =>
-                                              controller.makePayment(orderId)),
                                     if (controller.detail!.canCancel)
                                       Button(
-                                        title: 'Cancle Order',
+                                        title: 'Cancel Order',
                                         onTap: () => controller.remove(orderId),
                                       ),
-                                    if (!controller.detail!.canCancel)
-                                    Button(
+                                    if (controller.detail!.canConfirmReceive)
+                                      Button(
                                       title: 'Confirm Received',
                                       onTap: () =>
                                           controller.confirmOrder(orderId),
                                     ),
-                                    if (controller.detail?.status == 'RECEIVED')
-                                      Button(
-                                          title: 'Add review',
-                                          onTap: () => print('add review'))
                                   ],
                                 )
                               : SizedBox.shrink(),
