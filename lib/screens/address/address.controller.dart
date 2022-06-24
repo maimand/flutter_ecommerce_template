@@ -58,7 +58,8 @@ class AddressController extends GetxController {
     final List<Address> res = await repository.getAllAddress();
     addresses.assignAll(res);
     addresses.insert(0, Address());
-    int index = addresses.indexWhere((element) => element.isDefault!);
+    int index = addresses
+        .indexWhere((element) => element.isDefault! || element.id != null);
     if (index != -1) selectIndex = index;
     address.text = selectedAddress.address ?? "";
     city.text = selectedAddress.city ?? "";
@@ -94,14 +95,12 @@ class AddressController extends GetxController {
 
   onBack() {
     if (orderIds != null) {
-      for(var order in orderIds!) {
+      for (var order in orderIds!) {
         orderRepository.cancleOrder(order.data!.order!.sId!);
       }
     }
     Get.back();
-
   }
-
 
   void checkOut() async {
     if (orderIds == null) {

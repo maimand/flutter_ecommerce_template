@@ -67,7 +67,7 @@ class AddAddressForm extends StatelessWidget {
             child: TextField(
               controller: phone,
               decoration: InputDecoration(
-                  border: InputBorder.none, hintText: address.city),
+                  border: InputBorder.none, hintText: '123455'),
             ),
           ),
         ],
