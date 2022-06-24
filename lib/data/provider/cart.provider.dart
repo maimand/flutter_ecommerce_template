@@ -47,4 +47,8 @@ class CartProvider {
     return networkService
         .post(checkOutCartUrl, data: {"cart": cartId, "merchant": merchant});
   }
+
+  Future<HttpResponse> cancleOrder(String orderId) {
+    return networkService.delete('https://ecommerce-api-dut.herokuapp.com/api/order/$orderId/cancel');
+  }
 }

@@ -43,11 +43,18 @@ class CartRepository {
 
   Future<List<OrderProceed>> checkOutCart(List<CartModel> carts) async {
     List<OrderProceed> orderIds = [];
-    for(CartModel cart in carts) {
+    for (CartModel cart in carts) {
       final response = await provider.checkoutCart(cart.sId!, cart.merchant!);
       OrderProceed order = OrderProceed.fromJson(response.body);
       orderIds.add(order);
     }
     return orderIds;
+  }
+
+  Future<void> cancelCart(List<OrderProceed> orders) async {
+    for (OrderProceed order in orders) {
+      await provider.cancleOrder(order.data!.order!.sId!);
+    }
+    return;
   }
 }

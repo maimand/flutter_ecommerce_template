@@ -42,6 +42,14 @@ class OrderRepository {
     return;
   }
 
+  Future<void> cancleCart(String orderId) async {
+    final response = await provider.cancleCart(orderId);
+    if (response.statusCode != 200) {
+      throw Exception("Cancel order failed");
+    }
+    return;
+  }
+
   Future<OrderDocDetail> getOrderDetail(String orderId) async {
     final response = await provider.getOrderDetail(orderId);
     if (response.statusCode != 200) {

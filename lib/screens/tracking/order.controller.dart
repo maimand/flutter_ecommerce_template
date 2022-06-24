@@ -17,7 +17,7 @@ class OrderController extends GetxController {
   List<Order> get processingList =>
       orders.where((element) => element.status == 'PROCESSING').toList();
   List<Order> get cancelledList =>
-      orders.where((element) => element.status == 'CANCELLED').toList();
+      orders.where((element) => element.status == 'CANCEL').toList();
   List<Order> get deliveringList =>
       orders.where((element) => element.status == 'DELIVERING').toList();
   List<Order> get receivedList =>
@@ -51,7 +51,7 @@ class OrderController extends GetxController {
   }
 
   void remove(String orderId) {
-    orders.removeWhere((element) => element.sId == orderId);
+    orders.firstWhere((element) => element.sId == orderId).status = 'CANCEL';
     update();
   }
 }

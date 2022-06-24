@@ -49,7 +49,7 @@ class AddressController extends GetxController {
   void getArgument() {
     final arg = Get.arguments;
     if (arg != null && arg is List<OrderProceed>) {
-      orderIds = arg;
+      orderIds = List.from(arg);
     }
   }
 
@@ -91,6 +91,17 @@ class AddressController extends GetxController {
     }
     checkOut();
   }
+
+  onBack() {
+    if (orderIds != null) {
+      for(var order in orderIds!) {
+        orderRepository.cancleOrder(order.data!.order!.sId!);
+      }
+    }
+    Get.back();
+
+  }
+
 
   void checkOut() async {
     if (orderIds == null) {

@@ -22,7 +22,7 @@ class PaymentController extends GetxController {
   void getArg() {
     final arg = Get.arguments;
     if (arg != null && arg is List<OrderProceed>) {
-      orders = arg;
+      orders = List.from(arg);
     }
   }
 

@@ -37,6 +37,11 @@ class OrderProvider {
   }
 
   Future<HttpResponse> cancleOrder(String orderId) {
+    return networkService.put('$confirmReceivedUrl/$orderId/status',
+        data: {"status": "CANCEL"});
+  }
+
+  Future<HttpResponse> cancleCart(String orderId) {
     return networkService.delete('$cancleOrderUrl/$orderId/cancel');
   }
 

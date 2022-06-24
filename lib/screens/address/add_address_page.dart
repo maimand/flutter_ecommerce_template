@@ -10,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AddAddressPage extends StatelessWidget {
-
-
   Widget buildFinishButton(AddressController controller) => InkWell(
         onTap: () {
           controller.updateCurrentAddress();
@@ -44,8 +42,8 @@ class AddAddressPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AddressController>(
-      init: AddressController(
-          Get.find<AddressRepository>(), Get.find<OrderRepository>(), Get.find<AuthService>()),
+      init: AddressController(Get.find<AddressRepository>(),
+          Get.find<OrderRepository>(), Get.find<AuthService>()),
       builder: (controller) => Scaffold(
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
@@ -60,6 +58,7 @@ class AddAddressPage extends StatelessWidget {
                 fontFamily: "Montserrat",
                 fontSize: 18.0),
           ),
+          leading: BackButton(onPressed: () => controller.onBack()),
         ),
         body: LayoutBuilder(
           builder: (_, viewportConstraints) => SingleChildScrollView(
@@ -128,32 +127,32 @@ class AddAddressPage extends StatelessWidget {
                     AddAddressForm(
                         address: controller.selectedAddress,
                         addr: controller.address,
-                        phone:  controller.phone,
-                        city:  controller.city),
+                        phone: controller.phone,
+                        city: controller.city),
                     const SizedBox(height: 16),
-                    if(controller.orderIds != null)
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: SizedBox(
-                        height: 50,
-                        child: Swiper(
-                          itemCount: 2,
-                          itemBuilder: (_, index) {
-                            return CreditCard(
-                              text: index == 0 ? 'CASH' : 'PAYPAL',
-                            );
-                          },
-                          scale: 0.8,
-                          controller: controller.swiperController,
-                          onIndexChanged: (value) {
-                            controller.swiperIndex = value;
-                          },
-                          viewportFraction: 0.6,
-                          loop: false,
-                          fade: 0.7,
+                    if (controller.orderIds != null)
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: SizedBox(
+                          height: 50,
+                          child: Swiper(
+                            itemCount: 2,
+                            itemBuilder: (_, index) {
+                              return CreditCard(
+                                text: index == 0 ? 'CASH' : 'PAYPAL',
+                              );
+                            },
+                            scale: 0.8,
+                            controller: controller.swiperController,
+                            onIndexChanged: (value) {
+                              controller.swiperIndex = value;
+                            },
+                            viewportFraction: 0.6,
+                            loop: false,
+                            fade: 0.7,
+                          ),
                         ),
                       ),
-                    ),
                     Center(child: buildFinishButton(controller))
                   ],
                 ),
