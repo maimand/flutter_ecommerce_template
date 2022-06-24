@@ -70,7 +70,7 @@ class ProductDisplay extends StatelessWidget {
                             fontFamily: "Montserrat",
                             fontSize: 36.0)),
                     TextSpan(
-                        text: 'VND',
+                        text: 'USD',
                         style: const TextStyle(
                             color: const Color(0xFFFFFFFF),
                             fontWeight: FontWeight.w400,

@@ -78,12 +78,11 @@ class _RegisterPageState extends State<RegisterPage> {
     );
 
     Widget registerForm = Container(
-      height: 350,
-      child: Stack(
+      height: 360,
+      child: Column(
         children: <Widget>[
           Container(
-            height: 220,
-            width: MediaQuery.of(context).size.width,
+
             padding: const EdgeInsets.only(left: 32.0, right: 12.0),
             decoration: BoxDecoration(
                 color: Color.fromRGBO(255, 255, 255, 0.8),
@@ -105,7 +104,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: TextField(
                     controller: firstName,
                     style: TextStyle(fontSize: 16.0),
-                    obscureText: true,
                   ),
                 ),
                 Padding(
@@ -113,11 +111,10 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: TextField(
                     controller: lastName,
                     style: TextStyle(fontSize: 16.0),
-                    obscureText: true,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: const EdgeInsets.only(top: 8.0, bottom: 8),
                   child: TextField(
                     controller: password,
                     style: TextStyle(fontSize: 16.0),
@@ -127,33 +124,10 @@ class _RegisterPageState extends State<RegisterPage> {
               ],
             ),
           ),
+          const SizedBox(height: 16),
           registerButton,
         ],
       ),
-    );
-
-    Widget socialRegister = Column(
-      children: <Widget>[
-        Text(
-          'You can sign in with',
-          style: TextStyle(
-              fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.white),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.find_replace),
-              onPressed: () {},
-              color: Colors.white,
-            ),
-            IconButton(
-                icon: Icon(Icons.find_replace),
-                onPressed: () {},
-                color: Colors.white),
-          ],
-        )
-      ],
     );
 
     return Scaffold(
@@ -187,8 +161,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
                         registerForm,
                         Spacer(flex:2),
-                        Padding(
-                            padding: EdgeInsets.only(bottom: 20), child: socialRegister)
                       ],
                     ),
                   ),

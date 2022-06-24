@@ -65,8 +65,14 @@ class AuthService extends GetxService {
   Future<void> register(String username, String password, String firstName,
       String lastName) async {
     try {
+      MessageDialog.showLoading();
       repository.register(username, password, firstName, lastName);
+      MessageDialog.hideLoading();
+      MessageDialog.showToast('Successfully created new account');
+      Get.offAll(() => WelcomeBackPage());
     } on Exception catch (e) {
+      MessageDialog.showLoading();
+
       Navigator.of(Get.context!).pushReplacement(
           MaterialPageRoute(builder: (_) => WelcomeBackPage()));
     }
@@ -75,6 +81,8 @@ class AuthService extends GetxService {
   Future<void> forgetPassword(String email) async {
     try {
       repository.forgotPassword(email);
+      MessageDialog.showToast('Please check your email to reset password');
+
     } finally {
       Navigator.of(Get.context!).pushReplacement(
           MaterialPageRoute(builder: (_) => WelcomeBackPage()));

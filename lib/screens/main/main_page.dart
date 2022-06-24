@@ -107,15 +107,15 @@ class _MainPageState extends State<MainPage>
         init: HomeController(Get.find()),
         builder: (controller) => CustomPaint(
           painter: MainBackground(),
-          child: controller.list.isEmpty
-              ? Center(
-                  child: CircularProgressIndicator.adaptive(),
-                )
-              : TabBarView(
-                  controller: bottomTabController,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: <Widget>[
-                    SafeArea(
+          child: TabBarView(
+            controller: bottomTabController,
+            physics: NeverScrollableScrollPhysics(),
+            children: <Widget>[
+              controller.list.isEmpty
+                  ? Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    )
+                  : SafeArea(
                       child: NestedScrollView(
                           headerSliverBuilder:
                               (BuildContext context, bool innerBoxIsScrolled) {
@@ -137,11 +137,11 @@ class _MainPageState extends State<MainPage>
                           },
                           body: RecommendedList(products: controller.list)),
                     ),
-                    CategoryListPage(),
-                    CheckOutPage(),
-                    ProfilePage()
-                  ],
-                ),
+              CategoryListPage(),
+              CheckOutPage(),
+              ProfilePage()
+            ],
+          ),
         ),
       ),
     );

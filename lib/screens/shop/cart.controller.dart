@@ -35,7 +35,7 @@ class CartController extends GetxController {
       result += (element.price ?? element.purchasePrice ?? 0) *
           (element.quantity ?? 1);
     });
-    return '$result VND';
+    return '$result USD';
   }
 
   Future<void> getCart() async {
