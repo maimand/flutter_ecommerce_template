@@ -1,5 +1,7 @@
 import 'package:ecommerce_int2/data/models/category.model.dart';
 import 'package:ecommerce_int2/data/repository/category.repository.dart';
+import 'package:ecommerce_int2/screens/category/sub_category_list_page.dart';
+import 'package:ecommerce_int2/screens/search_products/search_page.dart';
 import 'package:ecommerce_int2/utils/message_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,6 +43,14 @@ class CategoryController extends GetxController {
       print(e);
     } finally {
       MessageDialog.hideLoading();
+    }
+  }
+
+  void onTap(Category category) {
+    if (category.subcategories == null || category.subcategories!.isEmpty) {
+      Get.to(() => SearchPage(subCategory: category.name!.toLowerCase()));
+    } else {
+      Get.to(() => SubCategoryListPage(category: category));
     }
   }
 
