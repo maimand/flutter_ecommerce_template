@@ -1,4 +1,5 @@
 import 'package:ecommerce_int2/data/models/review.dart';
+import 'package:ecommerce_int2/data/provider/merchant.provider.dart';
 import 'package:ecommerce_int2/services/network.service.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -10,10 +11,10 @@ class ReviewProvider {
   ReviewProvider(this.networkService);
 
   final String addReviewUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/review/add';
+      '$domain/review/add';
 
   final String getRevAboutProductUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/review';
+      '$domain/review';
 
 
   Future<HttpResponse> addReview(

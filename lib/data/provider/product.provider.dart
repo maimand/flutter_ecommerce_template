@@ -1,4 +1,5 @@
 import 'package:ecommerce_int2/data/models/product.model.dart';
+import 'package:ecommerce_int2/data/provider/merchant.provider.dart';
 import 'package:ecommerce_int2/services/network.service.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -10,10 +11,10 @@ class ProductProvider {
   ProductProvider(this.networkService);
 
   final String getAllProductsUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/product/list';
+      '$domain/product/list';
 
   final String searchProductUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/product/list/search/';
+      '$domain/product/list/search/';
 
 
   Future<HttpResponse> getProducts(

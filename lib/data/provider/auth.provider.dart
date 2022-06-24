@@ -1,3 +1,4 @@
+import 'package:ecommerce_int2/data/provider/merchant.provider.dart';
 import 'package:ecommerce_int2/utils/app_properties.dart';
 import 'package:ecommerce_int2/data/models/user.model.dart';
 import 'package:ecommerce_int2/services/network.service.dart';
@@ -11,13 +12,13 @@ class AuthProvider {
   AuthProvider(this.networkService);
 
   final String loginUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/auth/login';
+      '$domain/auth/login';
   final String registerUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/auth/register';
+      '$domain/auth/register';
   final String forgotUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/auth/forgot';
-  final String reset = 'https://ecommerce-api-dut.herokuapp.com/api/auth/reset';
-  final String userInfoUrl = 'https://ecommerce-api-dut.herokuapp.com/api/user';
+      '$domain/auth/forgot';
+  final String reset = '$domain/auth/reset';
+  final String userInfoUrl = '$domain/user';
 
   Future<HttpResponse> login(String username, String password) {
     return networkService

@@ -1,4 +1,5 @@
 import 'package:ecommerce_int2/data/models/order.model.dart';
+import 'package:ecommerce_int2/data/provider/merchant.provider.dart';
 import 'package:ecommerce_int2/services/network.service.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -9,19 +10,19 @@ class OrderProvider {
 
   OrderProvider(this.networkService);
 
-  final String orderUrl = 'https://ecommerce-api-dut.herokuapp.com/api/order';
+  final String orderUrl = '$domain/order';
 
   final String completeOrderUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/order/';
+      '$domain/order/';
 
   final String checkOutCartUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/order/proceed';
+      '$domain/proceed';
 
   final String cancleOrderUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/order';
+      '$domain/order';
 
   final String confirmReceivedUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/order';
+      '$domain/order';
 
   Future<HttpResponse> getAllOrders() {
     return networkService.get(orderUrl);

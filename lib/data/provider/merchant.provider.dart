@@ -1,6 +1,8 @@
 import 'package:ecommerce_int2/services/network.service.dart';
 import 'package:get_storage/get_storage.dart';
 
+const String domain = 'https://ecommerce-api-dut.herokuapp.com/api';
+
 class MerchantProvider {
   final NetWorkService networkService;
 
@@ -9,7 +11,7 @@ class MerchantProvider {
   MerchantProvider(this.networkService);
 
   final String getMerchantInfoUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/merchant';
+      '$domain/merchant';
 
   Future<HttpResponse> getMerchantInfo(
       String keyword) {

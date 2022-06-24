@@ -1,4 +1,5 @@
 import 'package:ecommerce_int2/data/models/product.model.dart';
+import 'package:ecommerce_int2/data/provider/merchant.provider.dart';
 import 'package:ecommerce_int2/services/network.service.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -10,19 +11,19 @@ class CartProvider {
   CartProvider(this.networkService);
 
   final String getAllCartUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/cart';
+      '$domain/cart';
 
   final String addProductToCartUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/cart/add';
+      '$domain/cart/add';
 
   final String modifyProductToCartUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/cart/modify';
+      '$domain/cart/modify';
 
   final String deleteProductFromCartUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/cart/delete';
+      '$domain/cart/delete';
 
   final String checkOutCartUrl =
-      'https://ecommerce-api-dut.herokuapp.com/api/order/proceed';
+      '$domain/order/proceed';
 
   Future<HttpResponse> getCarts() {
     return networkService.get(getAllCartUrl);
@@ -49,6 +50,6 @@ class CartProvider {
   }
 
   Future<HttpResponse> cancleOrder(String orderId) {
-    return networkService.delete('https://ecommerce-api-dut.herokuapp.com/api/order/$orderId/cancel');
+    return networkService.delete('$domain/order/$orderId/cancel');
   }
 }
