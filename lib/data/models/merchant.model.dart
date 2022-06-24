@@ -76,6 +76,7 @@ class Merchant {
   String? status;
   String? created;
   String? slug;
+  String? avatar;
   int? iV;
 
   Merchant(
@@ -89,6 +90,7 @@ class Merchant {
         this.status,
         this.created,
         this.slug,
+        this.avatar,
         this.iV});
 
   Merchant.fromJson(Map<String, dynamic> json) {
@@ -106,6 +108,7 @@ class Merchant {
     isActive = json['isActive'];
     status = json['status'];
     created = json['created'];
+    avatar = json['avatar'];
     slug = json['slug'];
     iV = json['__v'];
   }
@@ -122,6 +125,7 @@ class Merchant {
     data['business'] = this.business;
     data['isActive'] = this.isActive;
     data['status'] = this.status;
+    data['avatar'] = this.avatar;
     data['created'] = this.created;
     data['slug'] = this.slug;
     data['__v'] = this.iV;

@@ -13,7 +13,7 @@ class MerchantProvider {
 
   Future<HttpResponse> getMerchantInfo(
       String keyword) {
-    return networkService.get("$getMerchantInfoUrl/$keyword");
+    return networkService.get("$getMerchantInfoUrl/$keyword/all");
   }
 
 
