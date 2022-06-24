@@ -124,7 +124,7 @@ class ProductCard extends StatelessWidget {
         ),
         child: Row(children: [
           Hero(
-            tag: product.sId!,
+            tag: UniqueKey(),
             child: Image.network(
               product.imageUrl!,
               height: 130,

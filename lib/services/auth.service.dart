@@ -48,6 +48,8 @@ class AuthService extends GetxService {
       Navigator.of(Get.context!)
           .pushReplacement(MaterialPageRoute(builder: (_) => MainPage()));
     } catch (e) {
+      MessageDialog.hideLoading();
+      MessageDialog.showToast("Email and password wrong");
       print(e);
     }
   }

@@ -26,7 +26,7 @@ class ProductDisplay extends StatelessWidget {
                     ),
                     child: Container(
                       child: Hero(
-                        tag: product.imageUrl!,
+                        tag: UniqueKey(),
                         child: Image.network(
                           product.imageUrl!,
                           fit: BoxFit.contain,

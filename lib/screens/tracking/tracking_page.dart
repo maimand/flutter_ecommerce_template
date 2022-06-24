@@ -83,7 +83,7 @@ class Body extends StatelessWidget {
                 )
                 : Column(
                     children: [
-                      ...orders
+                      ...orders.reversed
                           .map((order) => GestureDetector(
                                 onTap: (() => controller.getOrderDetail(order)),
                                 child: Container(

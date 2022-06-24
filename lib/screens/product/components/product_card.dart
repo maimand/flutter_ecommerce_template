@@ -27,6 +27,19 @@ class ProductCard extends StatelessWidget {
                       padding: EdgeInsets.all(16.0),
                       child: Image.network(
                         product.imageUrl!,
+                        loadingBuilder: (a, b, c) => Container(
+                            width: 200,
+                            height: 200,
+                            child: c == null
+                                ? b
+                                : Center(
+                                    child:
+                                        CircularProgressIndicator.adaptive())),
+                        errorBuilder: (a, b, c) => Image.asset(
+                          'assets/jeans_5.png',
+                          width: 200,
+                          height: 200,
+                        ),
                         width: 200,
                         height: 200,
                       ),

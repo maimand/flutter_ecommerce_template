@@ -101,7 +101,7 @@ class MerchantPage extends StatelessWidget {
                               focalRadius: 0.1),
                         ),
                         child: Hero(
-                            tag: controller.products[index].sId!,
+                            tag: UniqueKey(),
                             child: Image.network(
                                 controller.products[index].imageUrl!))),
                   ),

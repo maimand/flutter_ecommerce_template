@@ -13,7 +13,7 @@ class OrderController extends GetxController {
   List<Order> orders = [];
 
   List<Order> get notProcessList =>
-      orders.where((element) => element.status == 'NOT_PROCESSED').toList();
+      orders.where((element) => element.status == 'NOT_PROCESS').toList();
   List<Order> get processingList =>
       orders.where((element) => element.status == 'PROCESSING').toList();
   List<Order> get cancelledList =>
